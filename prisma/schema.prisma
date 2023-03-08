@@ -7,9 +7,39 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = "mongodb://localhost:27017/SGVG"
+  }
+
+model funcionario {
+	id      String   @id @default(auto()) @map("_id") @db.ObjectId
+	nome String
+	cpf String
+	data_nasc DateTime
+	cargo String
+	root  Boolean
+
 }
 
-model Usuario {
+model  veiculo {
+	id      String   @id @default(auto()) @map("_id") @db.ObjectId
+	categoria String
+	modelo String
+	cor String
 
+}
+
+model vaga {
+	id      String   @id @default(auto()) @map("_id") @db.ObjectId
+	setor String
+	tipo String
+	status Boolean
+	preco Float
+	vaga_ocupada Boolean
+}
+
+model cliente {
+	id      String   @id @default(auto()) @map("_id") @db.ObjectId
+	nome String
+	email String 
+	telefone String
 }
