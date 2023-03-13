@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import express from 'express';
+import clienteRouter from './routes/cliente.js';
+
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -16,20 +18,17 @@ const PORT = 3000;
 
 app.listen(PORT,()=>console.log("Servidor rodando na porta "+PORT))
 
+app.use(clienteRouter);
+
 app.get('/',(req,res) => {
-		res.send('Hello world');
+		res.send('Servidor rodando');
 })
 
-app.get('/vagas', async (req,res) => {
-		const response = await prisma.vaga.findMany()
-		res.json(response)
-})
-app.get('/funcionario', async (req,res) => {
-		const response = await prisma.funcionario.findMany()
-		res.json(response)
+app.get('/signup',(req,res) => {
+		res.send('Rota de registro');
 })
 
-app.get('/cliente', async (req,res) => {
-		const response = await prisma.cliente.findMany()
-		res.json(response)
+app.get('/signin',(req,res) => {
+		res.send('Rota de login');
 })
+

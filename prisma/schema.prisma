@@ -1,45 +1,43 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = "mongodb://localhost:27017/SGVG"
-  }
-
-model funcionario {
-	id      String   @id @default(auto()) @map("_id") @db.ObjectId
-	nome String
-	cpf String
-	data_nasc DateTime
-	cargo String
-	root  Boolean
-
-}
-
-model  veiculo {
-	id      String   @id @default(auto()) @map("_id") @db.ObjectId
-	categoria String
-	modelo String
-	cor String
-
-}
-
-model vaga {
-	id      String   @id @default(auto()) @map("_id") @db.ObjectId
-	setor String
-	tipo String
-	status Boolean
-	preco Float
-	vaga_ocupada Boolean
+  url      = env("DATABASE_URL")
+  //url      = "mongodb+srv://icaroonofres:<password>@cluster0.rs3gboy.mongodb.net/test"
 }
 
 model cliente {
-	id      String   @id @default(auto()) @map("_id") @db.ObjectId
-	nome String
-	email String 
-	telefone String
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String
+  nome     String
+  telefone String
+}
+
+model funcionario {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  cargo     String
+  cpf       String
+  data_nasc DateTime @db.Date
+  idade     Float
+  nome      String
+  root      Boolean
+  senha     String
+}
+
+model vaga {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  preco        Float
+  setor        String
+  status       Boolean
+  tipo         String
+  vaga_ocupada Boolean
+}
+
+model veiculo {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  categoria String
+  cor       String
+  modelo    String
 }
