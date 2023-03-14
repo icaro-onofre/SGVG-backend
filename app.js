@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import clienteRouter from "./routes/cliente.js";
+import vagaRouter from "./routes/vaga.js";
+import veiculoRouter from "./routes/veiculo.js";
 import funcionarioRouter from "./routes/funcionario.js";
 
 import { PrismaClient } from "@prisma/client";
@@ -21,6 +23,8 @@ app.listen(PORT, () => console.log("Servidor rodando na porta " + PORT));
 
 app.use(clienteRouter);
 app.use(funcionarioRouter);
+app.use(vagaRouter);
+app.use(veiculoRouter);
 
 app.get("/", (req, res) => {
   res.send("Servidor rodando");
