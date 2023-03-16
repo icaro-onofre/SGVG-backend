@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 
@@ -10,8 +9,21 @@ veiculoRouter.get("/veiculo", async (req, res) => {
   res.json(response);
 });
 
-veiculoRouter.post("/veiculo/criar", async (req, res) => {
-  const {categoria,cor,modelo} = req.body;
+veiculoRouter.post("/veiculo/filter", async (req, res) => {
+  const { id_veiculo, categoria, cor, modelo } = req.body;
+  const response = await prisma.veiculo.findMany({
+    where: {
+      id: id_veiculo,
+      categoria: categoria != null ? categoria : undefined,
+      cor: cor != null ? cor : undefined,
+      modelo: modelo != null ? modelo : undefined,
+    },
+  });
+  res.json(response);
+});
+
+veiculoRouter.post("/veiculo/create", async (req, res) => {
+  const { categoria, cor, modelo } = req.body;
   const post = await prisma.veiculo.create({
     data: {
       categoria,
@@ -21,4 +33,30 @@ veiculoRouter.post("/veiculo/criar", async (req, res) => {
   });
   res.json(post);
 });
+
+veiculoRouter.post("/veiculo/update", async (req, res) => {
+  const { id_veiculo } = req.body;
+  const post = await prisma.veiculo.update({
+    where: {
+      id: id_veiculo,
+    },
+    data: {
+      categoria: categoria != null ? categoria : undefined,
+      cor: cor != null ? cor : undefined,
+      modelo: modelo != null ? modelo : undefined,
+    },
+  });
+  res.json(post);
+});
+
+veiculoRouter.post("/veiculo/delete", async (req, res) => {
+  const { id_veiculo } = req.body;
+  const post = await prisma.veiculo.delete({
+    where: {
+      id: id_veiculo,
+    },
+  });
+  res.json(post);
+});
+
 export default veiculoRouter;

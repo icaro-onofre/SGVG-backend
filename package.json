@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Código do backend do projeto SGVG",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,8 +19,12 @@
   },
   "homepage": "https://github.com/icaro-onofre/SGVG-backend#readme",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@prisma/client": "^4.11.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "faker-br": "^0.4.1"
   }
 }

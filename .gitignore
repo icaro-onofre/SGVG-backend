@@ -1,4 +1,6 @@
 node_modules
 dummy
+seeder.js
+*_seeder
 # Keep environment variables out of version control
 .env
