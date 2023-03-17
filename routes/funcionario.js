@@ -9,7 +9,7 @@ funcionarioRouter.get("/funcionario", async (req, res) => {
   res.json(response);
 });
 
-funcionarioRouter.get("/funcionario/filtrar", async (req, res) => {
+funcionarioRouter.post("/funcionario/filter", async (req, res) => {
   const { nome, cargo, cpf, idade, senha, data_nasc, root } = req.body;
   const response = await prisma.funcionario.findMany({
     where: {

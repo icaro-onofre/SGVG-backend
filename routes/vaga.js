@@ -12,13 +12,13 @@ vagaRouter.get("/vaga", async (req, res) => {
 vagaRouter.post("/vaga/filter", async (req, res) => {
   const { preco, setor, status, tipo, vaga_ocupada } = req.body;
   const response = await prisma.vaga.findMany({
-	  wher:{
-		  preco:preco!=null?preco:undefined,
-      setor:setor!=null?setor:undefined,
-      status:status!=null?status:undefined,
-      tipo:tipo!=null?tipo:undefined,
-      vaga_ocupada:vaga_ocupada!=null?vaga_ocupada:undefined,
-	  }
+    where: {
+      preco: preco != null ? preco : undefined,
+      setor: setor != null ? setor : undefined,
+      status: status != null ? status : undefined,
+      tipo: tipo != null ? tipo : undefined,
+      vaga_ocupada: vaga_ocupada != null ? vaga_ocupada : undefined,
+    },
   });
   res.json(response);
 });
@@ -38,7 +38,7 @@ vagaRouter.post("/vaga/create", async (req, res) => {
 });
 
 vagaRouter.post("/vaga/update", async (req, res) => {
-  const { preco, setor, status, tipo, vaga_ocupada } = req.body;
+  const { id_vaga, preco, setor, status, tipo, vaga_ocupada } = req.body;
   const post = await prisma.vaga.update({
     where: {
       id: id_vaga,
@@ -55,7 +55,7 @@ vagaRouter.post("/vaga/update", async (req, res) => {
 });
 
 vagaRouter.delete("/vaga/delete", async (req, res) => {
-  const { preco, setor, status, tipo, vaga_ocupada } = req.body;
+  const { id_vaga } = req.body;
   const post = await prisma.vaga.delete({
     where: {
       id: id_vaga,

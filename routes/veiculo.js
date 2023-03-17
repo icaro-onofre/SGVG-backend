@@ -35,7 +35,7 @@ veiculoRouter.post("/veiculo/create", async (req, res) => {
 });
 
 veiculoRouter.post("/veiculo/update", async (req, res) => {
-  const { id_veiculo } = req.body;
+  const { id_veiculo, categoria, cor, modelo } = req.body;
   const post = await prisma.veiculo.update({
     where: {
       id: id_veiculo,
@@ -49,7 +49,7 @@ veiculoRouter.post("/veiculo/update", async (req, res) => {
   res.json(post);
 });
 
-veiculoRouter.post("/veiculo/delete", async (req, res) => {
+veiculoRouter.delete("/veiculo/delete", async (req, res) => {
   const { id_veiculo } = req.body;
   const post = await prisma.veiculo.delete({
     where: {

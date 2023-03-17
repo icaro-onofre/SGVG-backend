@@ -9,11 +9,11 @@ clienteRouter.get("/cliente", async (req, res) => {
   res.json(response);
 });
 
-clienteRouter.get("/cliente/filtrar", async (req, res) => {
+clienteRouter.post("/cliente/filter", async (req, res) => {
   const { email, nome, telefone } = req.body;
   const response = await prisma.cliente.findMany({
     where: {
-      email: email != Null ? email : undefined,
+      email: email != null ? email : undefined,
       nome: nome != null ? nome : undefined,
       telefone: telefone != null ? telefone : undefined,
     },
@@ -35,11 +35,10 @@ clienteRouter.post("/cliente/create", async (req, res) => {
 });
 //Rota para atualizar
 clienteRouter.post("/cliente/update", async (req, res) => {
-  const { email, nome, telefone } = req.body;
+  const { id_cliente, email, nome, telefone } = req.body;
   const post = await prisma.cliente.update({
     where: {
       id: id_cliente,
-      email: email_cliente,
     },
     data: {
       email: email != null ? email : undefined,
@@ -51,7 +50,7 @@ clienteRouter.post("/cliente/update", async (req, res) => {
 });
 // Rota para apagar
 clienteRouter.delete("/cliente/delete", async (req, res) => {
-  const { email, nome, telefone } = req.body;
+  const { id_cliente, email, nome, telefone } = req.body;
   const post = await prisma.cliente.delete({
     where: {
       id: id_cliente,
