@@ -25,16 +25,18 @@ vagaRouter.post("/vaga/filter", async (req, res) => {
 
 vagaRouter.post("/vaga/create", async (req, res) => {
   const { preco, setor, status, tipo, vaga_ocupada } = req.body;
-  const post = await prisma.vaga.create({
-    data: {
-      preco,
-      setor,
-      status,
-      tipo,
-      vaga_ocupada,
-    },
-  });
-  res.json(post);
+  try {
+    let post = prisma.vaga.create({
+      data: {
+        email,
+        nome,
+        telefone,
+      },
+    });
+    res.status(201).send("Vaga criada com sucesso");
+  } catch {
+    res.status(500).send("Erro ao criar vaga");
+  }
 });
 
 vagaRouter.post("/vaga/update", async (req, res) => {

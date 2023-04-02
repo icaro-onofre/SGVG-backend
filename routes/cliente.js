@@ -23,15 +23,18 @@ clienteRouter.post("/cliente/filter", async (req, res) => {
 
 //Rota para criar
 clienteRouter.post("/cliente/create", async (req, res) => {
-  const { email, nome, telefone } = req.body;
-  const post = await prisma.cliente.create({
-    data: {
-      email,
-      nome,
-      telefone,
-    },
-  });
-  res.json(post);
+  try {
+    let post = prisma.cliente.create({
+      data: {
+        email,
+        nome,
+        telefone,
+      },
+    });
+    res.status(201).send("Cliente criado com sucesso");
+  } catch {
+    res.status(500).send("Erro ao criar cliente");
+  }
 });
 //Rota para atualizar
 clienteRouter.post("/cliente/update", async (req, res) => {

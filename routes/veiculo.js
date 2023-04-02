@@ -23,15 +23,18 @@ veiculoRouter.post("/veiculo/filter", async (req, res) => {
 });
 
 veiculoRouter.post("/veiculo/create", async (req, res) => {
-  const { categoria, cor, modelo } = req.body;
-  const post = await prisma.veiculo.create({
-    data: {
-      categoria,
-      cor,
-      modelo,
-    },
-  });
-  res.json(post);
+  try {
+    let post = prisma.veiculo.create({
+      data: {
+        categoria,
+        cor,
+        modelo,
+      },
+    });
+    res.status(201).send("Veiculo criado com sucesso.");
+  } catch {
+    res.status(500).send("Erro ao criar veiculo.");
+  }
 });
 
 veiculoRouter.post("/veiculo/update", async (req, res) => {

@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -10,7 +11,7 @@ funcionarioRouter.get("/funcionario", async (req, res) => {
 });
 
 funcionarioRouter.post("/funcionario/filter", async (req, res) => {
-  const { nome, cargo, cpf, idade, senha, data_nasc, root } = req.body;
+  const { nome, cargo, cpf, idade, data_nasc, root } = req.body;
   const response = await prisma.funcionario.findMany({
     where: {
       cargo: cargo != null ? cargo : undefined,
@@ -19,7 +20,6 @@ funcionarioRouter.post("/funcionario/filter", async (req, res) => {
       idade: idade != null ? idade : undefined,
       nome: nome != null ? nome : undefined,
       root: root != null ? root : undefined,
-      senha: senha != null ? senha : undefined,
     },
   });
   res.json(response);
@@ -27,15 +27,18 @@ funcionarioRouter.post("/funcionario/filter", async (req, res) => {
 
 funcionarioRouter.post("/funcionario/create", async (req, res) => {
   const { nome, cargo, cpf, idade, senha, data_nasc, root } = req.body;
-  const post = await prisma.funcionario.create({
+  const salt = await bcrypt.genSalt(10);
+  const senhaHashed = await bcrypt.hash(senha, salt);
+
+  const post = prisma.funcionario.create({
     data: {
-      cargo,
+      nome,
       cpf,
       data_nasc,
       idade,
-      nome,
+      cargo,
       root,
-      senha,
+      senhaHashed,
     },
   });
   res.json(post);
