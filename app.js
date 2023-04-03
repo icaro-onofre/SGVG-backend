@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
   res.send("Servidor rodando");
 });
 
-app.post("/signup", async (req, res) => {
+app.post("/signin", async (req, res) => {
   const { nome, senha } = req.body;
 
   const response = await prisma.funcionario.findMany({
@@ -45,7 +45,7 @@ app.post("/signup", async (req, res) => {
   });
 
   bcrypt.compare(senha, response.senha, (err, result) => {
-    jwt.sign({ nome: nome }, process.env.SECRET, (err, token) => {
+    jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
       if (!err) {
         res.status(200);
         res.send(token);
@@ -56,5 +56,3 @@ app.post("/signup", async (req, res) => {
     });
   });
 });
-
-app.get("/signin", (req, res) => {});
