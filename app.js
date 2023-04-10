@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("Servidor rodando");
 });
 
-app.post("/signin", cors(corsOptions), async (req, res) => {
+app.post("/signin", cors(corsOptions),authenticateToken, async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const { nome, senha } = req.body;
