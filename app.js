@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("Servidor rodando");
 });
 
-app.post("/signin", cors(corsOptions),authenticateToken, async (req, res) => {
+app.post("/signin", cors(corsOptions), async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const { nome, senha } = req.body;
@@ -52,9 +52,9 @@ app.post("/signin", cors(corsOptions),authenticateToken, async (req, res) => {
       },
     });
 
-    bcrypt.compare(senha, response.senha, (err, result) => {
+    bcrypt.compare(senha, response[0].senha, (err, result) => {
       jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
-        if (!err) {
+        if (result) {
           res.status(200);
           res.send(token);
         } else {
@@ -63,6 +63,7 @@ app.post("/signin", cors(corsOptions),authenticateToken, async (req, res) => {
         }
       });
     });
+
   } catch (error) {
     console.log(error+"Não foi possível criar o token");
   }
