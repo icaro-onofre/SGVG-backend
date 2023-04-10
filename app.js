@@ -1,10 +1,10 @@
+import authenticateToken from "./utils/auth.js"; 
+import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import express from "express";
 import bcrypt from "bcrypt";
-import bodyparser from "body-parser";
 import jwt from "jsonwebtoken";
-import { hashPass, generateAccessToken } from "./utils/auth.js";
 
 import clienteRouter from "./routes/cliente.js";
 import vagaRouter from "./routes/vaga.js";
@@ -17,13 +17,19 @@ const prisma = new PrismaClient();
 
 const app = express();
 
-const port = process.env.PORT || 3000;
-
 app.use(express.json());
 
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, () => console.log("Servidor rodando na porta " + PORT));
+
+app.use(cors());
+
+var corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  AcessControlAllowOrigin: true,
+};
 
 app.use(clienteRouter);
 app.use(funcionarioRouter);
@@ -34,25 +40,30 @@ app.get("/", (req, res) => {
   res.send("Servidor rodando");
 });
 
-app.post("/signin", async (req, res) => {
+app.post("/signin", cors(corsOptions),authenticateToken, async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   const { nome, senha } = req.body;
 
-  const response = await prisma.funcionario.findMany({
-    where: {
-      nome: nome,
-      senha: senha,
-    },
-  });
-
-  bcrypt.compare(senha, response.senha, (err, result) => {
-    jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
-      if (!err) {
-        res.status(200);
-        res.send(token);
-      } else {
-        res.status(500).json({ mensagem: "Erro ao gerar o JWT" });
-        res.end();
-      }
+  try {
+    const response = await prisma.funcionario.findMany({
+      where: {
+        nome: nome,
+      },
     });
-  });
+
+    bcrypt.compare(senha, response.senha, (err, result) => {
+      jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
+        if (!err) {
+          res.status(200);
+          res.send(token);
+        } else {
+          res.status(500).json({ mensagem: "Erro ao gerar o JWT" });
+          res.end();
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error+"Não foi possível criar o token");
+  }
 });

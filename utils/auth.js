@@ -1,18 +1,19 @@
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
-dotenv.config();
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-export const generateAccessToken = (nome) => {
-  return (token = jwt.sign(nome, process.env.SECRET, { expiresIn: "1800s" }));
-};
+  if (token == null) return res.sendStatus(401);
 
-// Salt and hash password
-export function hashPass(senha) {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(senha, salt, (err, hash) => {
-      return hash;
-    });
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    if (err) return res.sendStatus(403);
+
+    console.log(decoded);
+
+    req.user = user;
+
+    next();
   });
 }
+export default authenticateToken;
