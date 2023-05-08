@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
-  //url      = "mongodb+srv://icaroonofres:<password>@cluster0.rs3gboy.mongodb.net/test"
 }
 
 model cliente {
@@ -27,12 +26,16 @@ model funcionario {
 }
 
 model vaga {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  preco        Float
-  setor        String
-  status       Boolean
-  tipo         String
-  vaga_ocupada Boolean
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  clienteId      Json?
+  dataLocacao    String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  dataLocacaoFim Json?
+  preco          Float
+  setor          String
+  tipo           String
+  vaga_ocupada   String
 }
 
 model veiculo {

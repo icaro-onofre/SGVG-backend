@@ -31,6 +31,7 @@
     "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
-    "faker-br": "^0.4.1"
+    "faker-br": "^0.4.1",
+    "prisma": "^4.13.0"
   }
 }

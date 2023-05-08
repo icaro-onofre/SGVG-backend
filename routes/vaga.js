@@ -24,13 +24,27 @@ vagaRouter.post("/vaga/filter", async (req, res) => {
 });
 
 vagaRouter.post("/vaga/create", async (req, res) => {
-  const { preco, setor, status, tipo, vaga_ocupada } = req.body;
+  const {id_vaga,
+    preco,
+    setor,
+    status,
+    tipo,
+    vaga_ocupada,
+    dataLocacao,
+    dataLocacaoFim,
+    clienteId,} = req.body;
   try {
     let post = prisma.vaga.create({
       data: {
-        email,
-        nome,
-        telefone,
+    id_vaga,
+    preco,
+    setor,
+    status,
+    tipo,
+    vaga_ocupada,
+    dataLocacao,
+    dataLocacaoFim,
+    clienteId,
       },
     });
     res.status(201).send("Vaga criada com sucesso");
@@ -40,7 +54,17 @@ vagaRouter.post("/vaga/create", async (req, res) => {
 });
 
 vagaRouter.post("/vaga/update", async (req, res) => {
-  const { id_vaga, preco, setor, status, tipo, vaga_ocupada } = req.body;
+  const {
+    id_vaga,
+    preco,
+    setor,
+    status,
+    tipo,
+    vaga_ocupada,
+    dataLocacao,
+    dataLocacaoFim,
+    clienteId,
+  } = req.body;
   const post = await prisma.vaga.update({
     where: {
       id: id_vaga,
@@ -51,6 +75,9 @@ vagaRouter.post("/vaga/update", async (req, res) => {
       status: status != null ? status : undefined,
       tipo: tipo != null ? tipo : undefined,
       vaga_ocupada: vaga_ocupada != null ? vaga_ocupada : undefined,
+      dataLocacao: dataLocacao != null ? dataLocacao : undefined,
+      dataLocacaoFim: dataLocacaoFim != null ? dataLocacaoFim : undefined,
+      clienteId: clienteId != null ? clienteId : undefined,
     },
   });
   res.json(post);
