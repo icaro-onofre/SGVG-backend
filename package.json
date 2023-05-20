@@ -28,7 +28,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0"
+    "jsonwebtoken": "^9.0.0",
+    "react-loading-skeleton": "^3.3.1"
   },
   "devDependencies": {
     "faker-br": "^0.4.1",

@@ -5,20 +5,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const funcionarioRouter = express.Router();
 
-funcionarioRouter.get("/funcionario", async (req, res) => {
+funcionarioRouter.get("/funcionario/", async (req, res) => {
   const response = await prisma.funcionario.findMany();
   res.json(response);
 });
 
 funcionarioRouter.post("/funcionario/filter", async (req, res) => {
-  const { nome, cargo, cpf, idade, data_nasc, root } = req.body;
+  const { id, nome, telefone, email, cargo, cpf, idade, data_nasc, root } =
+    req.body;
   const response = await prisma.funcionario.findMany({
     where: {
+      id: id != null ? id : undefined,
       cargo: cargo != null ? cargo : undefined,
       cpf: cpf != null ? cpf : undefined,
       data_nasc: data_nasc != null ? data_nasc : undefined,
       idade: idade != null ? idade : undefined,
       nome: nome != null ? nome : undefined,
+      telefone: telefone != null ? telefone : undefined,
+      email: email != null ? email : undefined,
       root: root != null ? root : undefined,
     },
   });
@@ -45,11 +49,21 @@ funcionarioRouter.post("/funcionario/create", async (req, res) => {
 });
 
 funcionarioRouter.post("/funcionario/update", async (req, res) => {
-  const { id_funcionario, nome } = req.body;
+  const {
+    id,
+    nome,
+    telefone,
+    email,
+    senha,
+    cargo,
+    cpf,
+    idade,
+    data_nasc,
+    root,
+  } = req.body;
   const post = await prisma.funcionario.update({
     where: {
-      id: id_funcionario,
-      nome: nome,
+      id: id,
     },
     data: {
       cargo: cargo != null ? cargo : undefined,
@@ -57,6 +71,8 @@ funcionarioRouter.post("/funcionario/update", async (req, res) => {
       data_nasc: data_nasc != null ? data_nasc : undefined,
       idade: idade != null ? idade : undefined,
       nome: nome != null ? nome : undefined,
+      telefone: telefone != null ? telefone : undefined,
+      email: email != null ? email : undefined,
       root: root != null ? root : undefined,
       senha: senha != null ? senha : undefined,
     },
@@ -65,10 +81,10 @@ funcionarioRouter.post("/funcionario/update", async (req, res) => {
 });
 
 funcionarioRouter.delete("/funcionario/delete", async (req, res) => {
-  const { id_funcionario } = req.body;
+  const { id } = req.body;
   const post = await prisma.funcionario.delete({
     where: {
-      id: id_funcionario,
+      id: id,
     },
   });
   res.json(post);

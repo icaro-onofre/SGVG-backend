@@ -19,10 +19,12 @@ model funcionario {
   cargo     String
   cpf       String
   data_nasc DateTime @db.Date
+  email     String
   idade     Float
   nome      String
   root      Boolean
   senha     String
+  telefone  String
 }
 
 model vaga {
