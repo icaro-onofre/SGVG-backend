@@ -84,10 +84,10 @@ vagaRouter.post("/vaga/update", async (req, res) => {
 });
 
 vagaRouter.delete("/vaga/delete", async (req, res) => {
-  const { id_vaga } = req.body;
+  const { id } = req.body;
   const post = await prisma.vaga.delete({
     where: {
-      id: id_vaga,
+      id: id,
     },
   });
   res.json(post);

@@ -29,11 +29,10 @@ model funcionario {
 
 model vaga {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  clienteId      Json?
+  clienteId      String
   dataLocacao    String
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  dataLocacaoFim Json?
+  dataLocacaoFim String
+  nome           String
   preco          Float
   setor          String
   tipo           String
