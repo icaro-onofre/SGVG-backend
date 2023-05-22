@@ -1,4 +1,4 @@
-import authenticateToken from "./utils/auth.js"; 
+import authenticateToken from "./utils/auth.js";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
@@ -52,6 +52,7 @@ app.post("/signin", cors(corsOptions), async (req, res) => {
       },
     });
 
+
     bcrypt.compare(senha, response[0].senha, (err, result) => {
       jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
         if (result) {
@@ -63,8 +64,7 @@ app.post("/signin", cors(corsOptions), async (req, res) => {
         }
       });
     });
-
   } catch (error) {
-    console.log(error+"Não foi possível criar o token");
+    console.log(error + "Não foi possível criar o token");
   }
 });

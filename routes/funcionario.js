@@ -30,13 +30,18 @@ funcionarioRouter.post("/funcionario/filter", async (req, res) => {
 });
 
 funcionarioRouter.post("/funcionario/create", async (req, res) => {
-  const { nome, cargo, cpf, idade, senha, data_nasc, root } = req.body;
+  const { nome, cargo, cpf, senha, telefone, email, data_nasc, root } =
+    req.body;
+
   const salt = await bcrypt.genSalt(10);
+
   const senhaHashed = await bcrypt.hash(senha, salt);
 
   const post = await prisma.funcionario.create({
     data: {
       nome,
+      telefone,
+      email,
       cpf,
       data_nasc,
       idade,
