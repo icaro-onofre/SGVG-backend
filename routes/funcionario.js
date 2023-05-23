@@ -44,7 +44,6 @@ funcionarioRouter.post("/funcionario/create", async (req, res) => {
       email,
       cpf,
       data_nasc,
-      idade,
       cargo,
       root,
       senha: senhaHashed,
@@ -85,7 +84,7 @@ funcionarioRouter.post("/funcionario/update", async (req, res) => {
   res.json(post);
 });
 
-funcionarioRouter.delete("/funcionario/delete", async (req, res) => {
+funcionarioRouter.post("/funcionario/delete", async (req, res) => {
   const { id } = req.body;
   const post = await prisma.funcionario.delete({
     where: {
