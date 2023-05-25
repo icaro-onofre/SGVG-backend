@@ -27,10 +27,10 @@ model funcionario {
 }
 
 model vaga {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   clienteId      String
-  dataLocacao    String
-  dataLocacaoFim String
+  dataLocacao    DateTime @db.Date
+  dataLocacaoFim DateTime @db.Date
   nome           String
   preco          Float
   setor          String
