@@ -10,43 +10,45 @@ veiculoRouter.get("/veiculo", async (req, res) => {
 });
 
 veiculoRouter.post("/veiculo/filter", async (req, res) => {
-  const { id_veiculo, categoria, cor, modelo } = req.body;
+  const { id, categoria, cor, modelo, placa } = req.body;
   const response = await prisma.veiculo.findMany({
     where: {
-      id: id_veiculo,
+      id: id != null ? id : undefined,
       categoria: categoria != null ? categoria : undefined,
       cor: cor != null ? cor : undefined,
       modelo: modelo != null ? modelo : undefined,
+      placa: placa != null ? placa : undefined,
     },
   });
   res.json(response);
 });
 
 veiculoRouter.post("/veiculo/create", async (req, res) => {
-  try {
-    let post = prisma.veiculo.create({
-      data: {
-        categoria,
-        cor,
-        modelo,
-      },
-    });
-    res.status(201).send("Veiculo criado com sucesso.");
-  } catch {
-    res.status(500).send("Erro ao criar veiculo.");
-  }
+  const { categoria, cor, modelo, placa, clienteId } = req.body;
+  const post = await prisma.veiculo.create({
+    data: {
+      categoria,
+      cor,
+      modelo,
+      placa,
+      clienteId,
+    },
+  });
 });
 
 veiculoRouter.post("/veiculo/update", async (req, res) => {
-  const { id_veiculo, categoria, cor, modelo } = req.body;
+  const { id, categoria, cor, modelo, placa, clienteId } = req.body;
+
   const post = await prisma.veiculo.update({
     where: {
-      id: id_veiculo,
+      id: id,
     },
     data: {
+      placa: placa != null ? placa : undefined,
       categoria: categoria != null ? categoria : undefined,
       cor: cor != null ? cor : undefined,
       modelo: modelo != null ? modelo : undefined,
+      clienteId: clienteId != null ? clienteId : undefined,
     },
   });
   res.json(post);

@@ -9,6 +9,7 @@ datasource db {
 
 model cliente {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
+  cpf      String
   email    String
   nome     String
   telefone String
@@ -42,5 +43,7 @@ model veiculo {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   categoria String
   cor       String
+  cpf       String
   modelo    String
+  placa     String
 }
