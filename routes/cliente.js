@@ -10,12 +10,14 @@ clienteRouter.get("/cliente", async (req, res) => {
 });
 
 clienteRouter.post("/cliente/filter", async (req, res) => {
-  const { email, nome, telefone } = req.body;
+  const { id, email, nome, telefone, cpf } = req.body;
   const response = await prisma.cliente.findMany({
     where: {
+      id: id != null ? id : undefined,
       email: email != null ? email : undefined,
       nome: nome != null ? nome : undefined,
       telefone: telefone != null ? telefone : undefined,
+      cpf: cpf != null ? cpf : undefined,
     },
   });
   res.json(response);
@@ -23,30 +25,29 @@ clienteRouter.post("/cliente/filter", async (req, res) => {
 
 //Rota para criar
 clienteRouter.post("/cliente/create", async (req, res) => {
-  try {
-    let post = prisma.cliente.create({
-      data: {
-        email,
-        nome,
-        telefone,
-      },
-    });
-    res.status(201).send("Cliente criado com sucesso");
-  } catch {
-    res.status(500).send("Erro ao criar cliente");
-  }
+  const { email, nome, telefone, cpf } = req.body;
+  let post = await prisma.cliente.create({
+    data: {
+      email,
+      nome,
+      telefone,
+      cpf,
+    },
+  });
+  res.status(201).send("Cliente criado com sucesso");
 });
 //Rota para atualizar
 clienteRouter.post("/cliente/update", async (req, res) => {
-  const { id_cliente, email, nome, telefone } = req.body;
+  const { id, email, nome, telefone } = req.body;
   const post = await prisma.cliente.update({
     where: {
-      id: id_cliente,
+      id: id,
     },
     data: {
       email: email != null ? email : undefined,
       nome: nome != null ? nome : undefined,
       telefone: telefone != null ? telefone : undefined,
+      cpf: cpf != null ? cpf : undefined,
     },
   });
   res.json(post);
