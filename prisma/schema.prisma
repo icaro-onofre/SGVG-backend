@@ -27,6 +27,15 @@ model funcionario {
   telefone  String
 }
 
+model ocupacao {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  cpf            String
+  dataLocacao    DateTime @db.Date
+  dataLocacaoFim DateTime @db.Date
+  placa          String
+  vaga           String
+}
+
 model vaga {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   clienteId      String
