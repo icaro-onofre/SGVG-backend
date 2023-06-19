@@ -25,15 +25,20 @@ veiculoRouter.post("/veiculo/filter", async (req, res) => {
 
 veiculoRouter.post("/veiculo/create", async (req, res) => {
   const { categoria, cor, modelo, placa, clienteId } = req.body;
-  const post = await prisma.veiculo.create({
-    data: {
-      categoria,
-      cor,
-      modelo,
-      placa,
-      clienteId,
-    },
-  });
+  const exists = prisma.veiculo.findMany({ where: { placa: placa } });
+  if (exists.length != 0) {
+    res.json("Veiculo já existe");
+  } else {
+    const post = await prisma.veiculo.create({
+      data: {
+        categoria,
+        cor,
+        modelo,
+        placa,
+        clienteId,
+      },
+    });
+  }
 });
 
 veiculoRouter.post("/veiculo/update", async (req, res) => {
@@ -54,11 +59,11 @@ veiculoRouter.post("/veiculo/update", async (req, res) => {
   res.json(post);
 });
 
-veiculoRouter.delete("/veiculo/delete", async (req, res) => {
-  const { id_veiculo } = req.body;
+veiculoRouter.post("/veiculo/delete", async (req, res) => {
+  const { id } = req.body;
   const post = await prisma.veiculo.delete({
     where: {
-      id: id_veiculo,
+      id: id,
     },
   });
   res.json(post);

@@ -15,6 +15,13 @@ model cliente {
   telefone String
 }
 
+model config {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  diaria       Int
+  primeiraHora Float
+  valorHora    Float
+}
+
 model funcionario {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   cargo     String
@@ -28,24 +35,19 @@ model funcionario {
 }
 
 model ocupacao {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
   cpf            String
-  dataLocacao    DateTime @db.Date
-  dataLocacaoFim DateTime @db.Date
+  dataLocacao    DateTime  @db.Date
+  dataLocacaoFim DateTime? @db.Date
   placa          String
   vaga           String
 }
 
 model vaga {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  clienteId      String
-  dataLocacao    DateTime @db.Date
-  dataLocacaoFim DateTime @db.Date
-  nome           String
-  preco          Float
-  setor          String
-  tipo           String
-  vaga_ocupada   String
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  nome  String
+  setor String
+  tipo  String
 }
 
 model veiculo {

@@ -11,6 +11,7 @@ import vagaRouter from "./routes/vaga.js";
 import veiculoRouter from "./routes/veiculo.js";
 import funcionarioRouter from "./routes/funcionario.js";
 import ocupacaoRouter from "./routes/ocupacao.js";
+import configRouter from "./routes/config.js";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use(funcionarioRouter);
 app.use(vagaRouter);
 app.use(veiculoRouter);
 app.use(ocupacaoRouter);
+app.use(configRouter);
 
 app.get("/", (req, res) => {
   res.send("Servidor rodando");
@@ -44,29 +46,33 @@ app.get("/", (req, res) => {
 
 app.post("/signin", cors(corsOptions), async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-
   const { nome, senha } = req.body;
 
-  try {
-    const response = await prisma.funcionario.findMany({
-      where: {
-        nome: nome,
+  console.log(nome);
+  console.log(senha);
+  const response = await prisma.funcionario.findMany({
+    where: {
+      nome: nome,
+    },
+  });
+
+  bcrypt.compare(senha, response[0].senha, (err, result) => {
+    jwt.sign(
+      {
+        id: response[0].id,
+        nome: response[0].nome,
+        email: response[0].email,
+        root: response[0].root,
       },
-    });
-
-
-    bcrypt.compare(senha, response[0].senha, (err, result) => {
-      jwt.sign(response[0].id, process.env.SECRET, (err, token) => {
+      process.env.SECRET,
+      (err, token) => {
         if (result) {
-          res.status(200);
           res.send(token);
         } else {
-          res.status(500).json({ mensagem: "Erro ao gerar o JWT" });
+          res.status(401).json({ mensagem: "Erro ao gerar o JWT" });
           res.end();
         }
-      });
-    });
-  } catch (error) {
-    console.log(error + "Não foi possível criar o token");
-  }
+      }
+    );
+  });
 });

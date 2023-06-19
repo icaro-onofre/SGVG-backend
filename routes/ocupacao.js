@@ -27,40 +27,43 @@ ocupacaoRouter.post("/ocupacao/filter", async (req, res) => {
 
 ocupacaoRouter.post("/ocupacao/create", async (req, res) => {
   const { cpf, dataLocacao, dataLocacaoFim, placa, vaga } = req.body;
+  console.log(cpf, dataLocacao, dataLocacaoFim, placa, vaga);
 
-  const salt = await bcrypt.genSalt(10);
-
-  const senhaHashed = await bcrypt.hash(senha, salt);
-
-  const post = await prisma.ocupacao.create({
-    data: {
-      cpf,
-      dataLocacao,
-      dataLocacaoFim,
-      placa,
-      vaga,
-    },
-  });
-  res.json(post);
+  try {
+    const post = await prisma.ocupacao.create({
+      data: {
+        cpf: cpf != null ? cpf : undefined,
+        dataLocacao,
+        dataLocacaoFim: dataLocacaoFim != null ? dataLocacaoFim : undefined,
+        placa,
+        vaga,
+      },
+    });
+    res.status(200).json({ mensagem: "Vaga ocupada com sucesso" });
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 ocupacaoRouter.post("/ocupacao/update", async (req, res) => {
-  const { id, cpf, dataLocacao, dataLocacaoFim, placa, vaga } =
-    req.body;
-  const post = await prisma.ocupacao.update({
-    where: {
-      id: id,
-    },
-    data: {
-      id: id != null ? id : undefined,
-      cpf: cpf != null ? cpf : undefined,
-      dataLocacao: dataLocacao != null ? dataLocacao : undefined,
-      dataLocacaoFim: dataLocacaoFim != null ? dataLocacaoFim : undefined,
-      vaga: vaga != null ? vaga : undefined,
-      placa: placa != null ? placa : undefined,
-    },
-  });
-  res.json(post);
+  const { id, cpf, dataLocacao, dataLocacaoFim, placa, vaga } = req.body;
+  try {
+    const post = await prisma.ocupacao.update({
+      where: {
+        id: id,
+      },
+      data: {
+        cpf: cpf != null ? cpf : undefined,
+        dataLocacao: dataLocacao != null ? dataLocacao : undefined,
+        dataLocacaoFim: dataLocacaoFim != null ? dataLocacaoFim : undefined,
+        vaga: vaga != null ? vaga : undefined,
+        placa: placa != null ? placa : undefined,
+      },
+    });
+    res.status(200);
+  } catch (err) {
+    res.status(401);
+  }
 });
 
 ocupacaoRouter.post("/ocupacao/delete", async (req, res) => {

@@ -53,6 +53,14 @@ funcionarioRouter.post("/funcionario/create", async (req, res) => {
 funcionarioRouter.post("/funcionario/update", async (req, res) => {
   const { id, nome, telefone, email, senha, cargo, cpf, data_nasc, root } =
     req.body;
+
+  const salt = "";
+  const senhaHashed = "";
+  if (senha != null) {
+    salt = await bcrypt.genSalt(10);
+    senhaHashed = await bcrypt.hash(senha, salt);
+  }
+
   const post = await prisma.funcionario.update({
     where: {
       id: id,
@@ -65,7 +73,7 @@ funcionarioRouter.post("/funcionario/update", async (req, res) => {
       telefone: telefone != null ? telefone : undefined,
       email: email != null ? email : undefined,
       root: root != null ? root : undefined,
-      senha: senha != null ? senha : undefined,
+      senha: senha != null ? senhaHashed : undefined,
     },
   });
   res.json(post);

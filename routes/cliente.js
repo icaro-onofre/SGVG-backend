@@ -38,7 +38,7 @@ clienteRouter.post("/cliente/create", async (req, res) => {
 });
 //Rota para atualizar
 clienteRouter.post("/cliente/update", async (req, res) => {
-  const { id, email, nome, telefone } = req.body;
+  const { id, email, nome,cpf, telefone } = req.body;
   const post = await prisma.cliente.update({
     where: {
       id: id,
@@ -50,7 +50,7 @@ clienteRouter.post("/cliente/update", async (req, res) => {
       cpf: cpf != null ? cpf : undefined,
     },
   });
-  res.json(post);
+  res.json("Cliente atualizado com sucesso" + post);
 });
 // Rota para apagar
 clienteRouter.delete("/cliente/delete", async (req, res) => {
